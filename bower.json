@@ -1,0 +1,28 @@
+{
+  "name": "jervdesign-js-value-editor",
+  "homepage": "https://github.com/jerv13/jervdesign-js-value-editor",
+  "description": "HTML JavaScript Value Editor",
+  "keywords": [
+    "javascipt",
+    "html",
+    "json",
+    "editor",
+    "angularjs"
+  ],
+  "authors": [
+    "James Jervis"
+  ],
+  "license": "BSD 2",
+  "dependencies": {
+    "angular": "1.*",
+    "bootstrap": "3.*"
+  },
+  "devDependencies": {},
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
