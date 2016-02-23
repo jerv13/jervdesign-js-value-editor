@@ -52,6 +52,9 @@ angular.module('JervDesignJsValueEditor').service(
                  */
                 self.getDataSchema = function (name, value) {
 
+                    if (!name) {
+                        name = "";
+                    }
                     var type = self.getType(name, value);
 
                     var schema = new JervDesignJsValueEditorDataSchema();

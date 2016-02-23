@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Example</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+          media="screen"
+          rel="stylesheet"
+          type="text/css">
+
+    <script type="text/javascript"
+            src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript"
+            src="/modules/rcm-angular-js/angular/angular.js"></script>
+    <script type="text/javascript"
+            src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="/vendor/jervdesign-js-value-editor/dist/jervdesign-js-value-editor.js"></script>
 </head>
-<body>
+<body ng-app="JervDesignJsValueEditor">
 <h1>JavaScript Value Editor Example</h1>
+<div jerv-design-js-value-editor-standard-display="{test: 'test'}">
+</div>
 </body>
 </html>

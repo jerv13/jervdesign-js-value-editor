@@ -18,9 +18,7 @@ var JervDesignJsValueEditorFilterValidateResult = function () {
 
 angular.module('JervDesignJsValueEditor').factory(
     'JervDesignJsValueEditorFilterValidateResult',
-    [
-        function () {
-            return JervDesignJsValueEditorFilterValidateResult;
-        }
-    ]
+    function () {
+        return JervDesignJsValueEditorFilterValidateResult;
+    }
 );

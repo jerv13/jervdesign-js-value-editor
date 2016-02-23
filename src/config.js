@@ -21,3 +21,17 @@ var JervDesignJsValueEditorConfig = {
         "directive": "jervdesign-js-value-editor-type-changer"
     }
 };
+
+
+angular.module('JervDesignJsValueEditor').run(
+    [
+        'JervDesignJsValueEditorService',
+        'JervDesignJsValueEditorDataTypeLiteral',
+        function (
+            JervDesignJsValueEditorService,
+            JervDesignJsValueEditorDataTypeLiteral
+        ) {
+            JervDesignJsValueEditorService.setTypeService(JervDesignJsValueEditorDataTypeLiteral);
+        }
+    ]
+);
