@@ -68,9 +68,10 @@
 <h1>JavaScript Value Editor Example</h1>
 
 <div ng-controller="JervDesignJsValueEditorExample as self">
-    <pre>{self.testData | json}</pre>
+
     <div jerv-design-js-value-editor-standard-display value-data="self.testData">
     </div>
+    <pre>{{self.testData | json}}</pre>
 </div>
 </body>
 </html>
