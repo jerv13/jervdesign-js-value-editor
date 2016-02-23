@@ -54,6 +54,27 @@ module.exports = function (grunt) {
                         ]
                     }
                 }
+            },
+            copy: {
+                dist: {
+                    files: [
+                        {
+                            expand: true,
+                            cwd: 'src',
+                            src: '*.html',
+                            dest: 'dist'
+                        }
+                    ]
+                }
+            },
+            watch: {
+                scripts: {
+                    files: ['src/**'],
+                    tasks: ['uglify', 'concat', 'copy'],
+                    options: {
+                        spawn: false
+                    }
+                }
             }
         }
     );
@@ -61,7 +82,9 @@ module.exports = function (grunt) {
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task(s).
-    grunt.registerTask('default', ['uglify', 'concat']);
+    grunt.registerTask('default', ['uglify', 'concat', 'copy']);
 };

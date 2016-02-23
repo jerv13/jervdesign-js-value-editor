@@ -1,0 +1,8 @@
+<div>
+    <h2>Editor:</h2>
+    <!--<pre>{{schemas | json}}</pre>-->
+    <div ng-repeat="schema in schemas">
+        <strong>{{schema.name}}:</strong> <span>{{schema.displayValue}}</span>
+        <div>Directive: {{schema.directive}}:</div>
+    </div>
+</div>

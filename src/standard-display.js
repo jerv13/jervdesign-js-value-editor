@@ -3,22 +3,38 @@ angular.module('JervDesignJsValueEditor').directive(
     [
         'JervDesignJsValueEditorService',
         function (JervDesignJsValueEditorService) {
+            /**
+             * link
+             * @param $scope
+             * @param element
+             * @param attrs
+             */
             function link($scope, element, attrs) {
-                var dataValues = attrs.jervDesignJsValueEditorStandardDisplay;
 
-                if(!dataValues) {
-                    console.error("data-values attribute missing");
+                var valueData = attrs.valueData;
+
+                if (!valueData) {
+                    console.error("value-data attribute missing");
                 }
 
-                $scope.data = JervDesignJsValueEditorService.getDataSchema("data", dataValues);
+                $scope.schemas = [];
+
+                $scope.$watch('valueData', function(value){
+                    if(value){
+                        $scope.schemas = JervDesignJsValueEditorService.getDataSchema(
+                            "schemas",
+                            value
+                        );
+                    }
+                });
             }
 
             return {
                 link: link,
-                template: '' +
-                '<div>' +
-                ' DIR:<pre>{{data | json}}</pre>' +
-                '</div>'
+                scope: {
+                    valueData: '='
+                },
+                templateUrl: JervDesignJsValueEditorService.libPath + 'standard-display.html'
             }
         }
     ]

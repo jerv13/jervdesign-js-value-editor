@@ -13,7 +13,7 @@ angular.module('JervDesignJsValueEditor').service(
                 return Number(value);
             };
             service.getDataValue = function (name, value) {
-                return Number(value);
+                return "" + value + "";
             };
             return service;
         }

@@ -13,17 +13,15 @@ angular.module('JervDesignJsValueEditor').service(
             service.type = "array";
             service.description = "Handles array";
             service.directive = "jervdesign-js-value-editor-array";
-            service.getDisplayValue = function (name, value) {
-                var parsed = [];
+            service.getDisplayValue = function (name, value, schemas) {
                 for (var i = 0; i < value.length; i++) {
-                    parsed.push(
-                        JervDesignJsValueEditorService.getDataSchema(
-                            name + '.' + i,
-                            value[i]
-                        )
+                    JervDesignJsValueEditorService.getDataSchema(
+                        name + '.' + i,
+                        value[i],
+                        schemas
                     );
                 }
-                return parsed;
+                return null;
             };
             service.getDataValue = function (name, value) {
                 var parsed = [];

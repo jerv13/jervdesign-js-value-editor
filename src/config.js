@@ -19,19 +19,53 @@ var JervDesignJsValueEditorConfig = {
     "type-changer": {
         "description": "Handles changing types",
         "directive": "jervdesign-js-value-editor-type-changer"
-    }
+    },
+    "distPath": "/vendor/jervdesign-js-value-editor/dist/"
 };
-
-
+/**
+ *
+ */
 angular.module('JervDesignJsValueEditor').run(
     [
         'JervDesignJsValueEditorService',
         'JervDesignJsValueEditorDataTypeLiteral',
+        'JervDesignJsValueEditorDataTypeString',
+        'JervDesignJsValueEditorDataTypeNull',
+        'JervDesignJsValueEditorDataTypeNumber',
+        'JervDesignJsValueEditorDataTypeObject',
+        'JervDesignJsValueEditorDataTypeArray',
+        'JervDesignJsValueEditorDataTypeBoolean',
         function (
             JervDesignJsValueEditorService,
-            JervDesignJsValueEditorDataTypeLiteral
+            JervDesignJsValueEditorDataTypeLiteral,
+            JervDesignJsValueEditorDataTypeString,
+            JervDesignJsValueEditorDataTypeNull,
+            JervDesignJsValueEditorDataTypeNumber,
+            JervDesignJsValueEditorDataTypeObject,
+            JervDesignJsValueEditorDataTypeArray,
+            JervDesignJsValueEditorDataTypeBoolean
         ) {
-            JervDesignJsValueEditorService.setTypeService(JervDesignJsValueEditorDataTypeLiteral);
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeLiteral
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeString
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeNull
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeNumber
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeObject
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeArray
+            );
+            JervDesignJsValueEditorService.setTypeService(
+                JervDesignJsValueEditorDataTypeBoolean
+            );
         }
     ]
 );

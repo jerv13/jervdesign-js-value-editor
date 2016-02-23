@@ -13,26 +13,24 @@ angular.module('JervDesignJsValueEditor').service(
             service.type = "object";
             service.description = "Handles objects";
             service.directive = "jervdesign-js-value-editor-object";
-            service.getDisplayValue = function (name, value) {
-                var parsed = [];
+            service.getDisplayValue = function (name, value, schemas) {
                 for (var prop in value) {
-                    parsed.push(
                         JervDesignJsValueEditorService.getDataSchema(
                             name + '.' + prop,
-                            value[prop]
+                            value[prop],
+                            schemas
                         )
-                    );
                 }
-                return parsed;
+                return null;
             };
             service.getDataValue = function (name, value) {
-                var parsed = {};
-                for (var prop in value) {
-                    parsed[prop] = JervDesignJsValueEditorService.getDataValue(
-                        value[prop]
-                    );
-                }
-                return parsed;
+                //var parsed = {};
+                //for (var prop in value) {
+                //    parsed[prop] = JervDesignJsValueEditorService.getDataValue(
+                //        value[prop]
+                //    );
+                //}
+                //return parsed;
             };
             return service;
         }

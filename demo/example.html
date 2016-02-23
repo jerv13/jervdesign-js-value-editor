@@ -17,10 +17,60 @@
             src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script type="text/javascript"
             src="/vendor/jervdesign-js-value-editor/dist/jervdesign-js-value-editor.js"></script>
+
+    <script type="text/javascript">
+        angular.module('JervDesignJsValueEditor').controller(
+                'JervDesignJsValueEditorExample',
+                function () {
+                    var self = this;
+
+                    self.TestSpecial = function () {
+                        var self = this;
+                        self.specialThing = "test";
+                    };
+                    var testSpecial = new self.TestSpecial();
+
+                    self.testData = {
+                        "rliteral": {"literalKey": "value"},
+                        "rstring": "StringValue",
+                        "rnull": "",
+                        "rnumber": 123.123,
+                        "robject": {
+                            "oliteral": '{"oliteralKey": "ovalue"}',
+                            "ostring": "oStringValue",
+                            "onull": "",
+                            "onumber": 123.123,
+                            "oobject": {
+                                "objectKey": "ovalue"
+                            },
+                            "oarray": ['ovalue1', 'ovalue2'],
+                            "oboolean": true
+                        },
+                        "rarray": [
+                            '{"aliteralKey": "avalue"}',
+                            "aStringValue",
+                            "",
+                            123.123,
+                            {
+                                "aobjectKey": "value"
+                            },
+                            ['avalue1', 'avalue2'],
+                            true
+                        ],
+                        "rboolean": true,
+                        "testSpecial": testSpecial
+                    };
+                }
+        );
+    </script>
 </head>
 <body ng-app="JervDesignJsValueEditor">
 <h1>JavaScript Value Editor Example</h1>
-<div jerv-design-js-value-editor-standard-display="{test: 'test'}">
+
+<div ng-controller="JervDesignJsValueEditorExample as self">
+    <pre>{self.testData | json}</pre>
+    <div jerv-design-js-value-editor-standard-display value-data="self.testData">
+    </div>
 </div>
 </body>
 </html>

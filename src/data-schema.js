@@ -37,6 +37,12 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.title = self.name;
 
     /**
+     * directive
+     * @type {string}
+     */
+    self.directive = null;
+
+    /**
      * filterValidate - filter and validate value
      * @returns {JervDesignJsValueEditorFilterValidateResult}
      */
