@@ -8,13 +8,7 @@ angular.module('JervDesignJsValueEditor').service(
 
             service.type = "null";
             service.description = "Handles nulls";
-            service.directive = "jervdesign-js-value-editor-string";
-            service.getDisplayValue = function (name, value) {
-                return null;
-            };
-            service.getDataValue = function (name, value) {
-                return null;
-            };
+            service.directive = "jerv-design-js-value-editor-field-literal";
             return service;
         }
     ]

@@ -12,8 +12,9 @@ angular.module('JervDesignJsValueEditor').service(
 
             service.type = "array";
             service.description = "Handles array";
-            service.directive = "jervdesign-js-value-editor-array";
-            service.getDisplayValue = function (name, value, schemas) {
+            service.directive = "jerv-design-js-value-editor-field-literal";
+            service.display = false;
+            service.buildSchemaValues = function (name, value, schemas) {
                 for (var i = 0; i < value.length; i++) {
                     JervDesignJsValueEditorService.getDataSchema(
                         name + '.' + i,
@@ -21,14 +22,6 @@ angular.module('JervDesignJsValueEditor').service(
                         schemas
                     );
                 }
-                return null;
-            };
-            service.getDataValue = function (name, value) {
-                var parsed = [];
-                for (var i = 0; i < value.length; i++) {
-                    parsed.push(JervDesignJsValueEditorService.getDataValue(value[i]));
-                }
-                return parsed;
             };
             return service;
         }

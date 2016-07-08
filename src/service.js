@@ -20,13 +20,25 @@ var JervDesignJsValueEditorService = function (
     };
 
     /**
+     * getTypeService
+     * @param type
+     * @returns {JervDesignJsValueEditorFilterDataType}
+     */
+    self.getTypeService = function (type) {
+        if (!typeServices[type]) {
+            throw "Type not found:" + type;
+        }
+        return typeServices[type]
+    };
+
+    /**
      *
      * @param name
      * @param value
      * @returns {string}
      */
     self.getType = function (name, value) {
-        var type = typeof value;
+        var type = self.typeOf(value);
 
         // @todo check schema for type
 
@@ -36,6 +48,27 @@ var JervDesignJsValueEditorService = function (
         }
 
         return type;
+    };
+
+    /**
+     * typeOf
+     * @param value
+     * @returns {string}
+     */
+    self.typeOf = function (value) {
+        if (value === null) {
+            return 'null';
+        }
+
+        if (value === undefined) {
+            return 'null';
+        }
+
+        if (Array.isArray(value)) {
+            return 'array';
+        }
+
+        return typeof value;
     };
 
     /**
@@ -55,18 +88,22 @@ var JervDesignJsValueEditorService = function (
         }
         var type = self.getType(name, value);
 
-        console.log(name + ' is type ' + type);
+        //console.log(name + ' is type ' + type);
 
         var schema = new JervDesignJsValueEditorDataSchema();
         schema.type = type;
         schema.name = name;
         schema.value = value;
-        schema.displayValue = typeServices[type].getDisplayValue(
+        schema.original = value;
+        schema.displayValue = JSON.stringify(value);
+        schema.directive = typeServices[type].directive;
+        schema.display = typeServices[type].display;
+
+        typeServices[type].buildSchemaValues(
             name,
             value,
             schemas
         );
-        schema.directive = typeServices[type].directive;
 
         schemas[name] = schema;
 

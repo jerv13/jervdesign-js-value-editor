@@ -8,13 +8,7 @@ angular.module('JervDesignJsValueEditor').service(
 
             service.type = "number";
             service.description = "Handles numbers";
-            service.directive = "jervdesign-js-value-editor-number";
-            service.getDisplayValue = function (name, value) {
-                return Number(value);
-            };
-            service.getDataValue = function (name, value) {
-                return "" + value + "";
-            };
+            service.directive = "jerv-design-js-value-editor-field-number";
             return service;
         }
     ]

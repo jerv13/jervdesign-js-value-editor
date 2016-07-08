@@ -8,13 +8,7 @@ angular.module('JervDesignJsValueEditor').service(
 
             service.type = "literal";
             service.description = "Handles literals as strings";
-            service.directive = "jervdesign-js-value-editor-literal";
-            service.getDisplayValue = function (name, value) {
-                return JSON.stringify(value);
-            };
-            service.getDataValue = function (name, value) {
-                return JSON.parse(value);
-            };
+            service.directive = "jerv-design-js-value-editor-field-literal";
             return service;
         }
     ]

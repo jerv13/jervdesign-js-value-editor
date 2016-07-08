@@ -15,7 +15,7 @@ var JervDesignJsValueEditorDataSchema = function () {
      * name
      * @type {string}
      */
-    self.name = "TEMP";
+    self.name = "";
 
     /**
      * value

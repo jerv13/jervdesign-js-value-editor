@@ -8,13 +8,7 @@ angular.module('JervDesignJsValueEditor').service(
 
             service.type = "boolean";
             service.description = "Handles booleans";
-            service.directive = "jervdesign-js-value-editor-boolean";
-            service.getDisplayValue = function (name, value) {
-                return (value);
-            };
-            service.getDataValue = function (name, value) {
-                return (value);
-            };
+            service.directive = "jerv-design-js-value-editor-field-boolean";
             return service;
         }
     ]

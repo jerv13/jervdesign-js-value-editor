@@ -1,5 +1,28 @@
 module.exports = function (grunt) {
 
+    var files = [
+        'src/module.js',
+        'src/config.js',
+        'src/data-schema.js',
+        'src/data-type.js',
+        'src/filter-validate-result.js',
+        'src/data-type-array.js',
+        'src/data-type-boolean.js',
+        'src/data-type-literal.js',
+        'src/data-type-null.js',
+        'src/data-type-number.js',
+        'src/data-type-object.js',
+        'src/data-type-string.js',
+        'src/service.js',
+        'src/standard-display.js',
+        'src/field.js',
+        'src/field-boolean.js',
+        'src/field-literal.js',
+        'src/field-number.js',
+        'src/field-string.js'
+        
+    ];
+
     // Project configuration.
     grunt.initConfig(
         {
@@ -12,22 +35,7 @@ module.exports = function (grunt) {
                         sourceMap: true
                     },
                     files: {
-                        'dist/<%= pkg.name %>.min.js': [
-                            'src/module.js',
-                            'src/config.js',
-                            'src/data-schema.js',
-                            'src/data-type.js',
-                            'src/filter-validate-result.js',
-                            'src/data-type-array.js',
-                            'src/data-type-boolean.js',
-                            'src/data-type-literal.js',
-                            'src/data-type-null.js',
-                            'src/data-type-number.js',
-                            'src/data-type-object.js',
-                            'src/data-type-string.js',
-                            'src/service.js',
-                            'src/standard-display.js'
-                        ]
+                        'dist/<%= pkg.name %>.min.js': files
                     }
                 }
             },
@@ -36,22 +44,7 @@ module.exports = function (grunt) {
                 },
                 dist: {
                     files: {
-                        'dist/<%= pkg.name %>.js': [
-                            'src/module.js',
-                            'src/config.js',
-                            'src/data-schema.js',
-                            'src/data-type.js',
-                            'src/filter-validate-result.js',
-                            'src/data-type-array.js',
-                            'src/data-type-boolean.js',
-                            'src/data-type-literal.js',
-                            'src/data-type-null.js',
-                            'src/data-type-number.js',
-                            'src/data-type-object.js',
-                            'src/data-type-string.js',
-                            'src/service.js',
-                            'src/standard-display.js'
-                        ]
+                        'dist/<%= pkg.name %>.js': files
                     }
                 }
             },
