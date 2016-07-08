@@ -421,7 +421,7 @@ var JervDesignJsValueEditorService = function (
 
     var typeServices = {};
 
-    self.libPath = '/vendor/jervdesign-js-value-editor/dist/';
+    self.libPath = '/bower_components/jervdesign-js-value-editor/dist/';
 
     /**
      *
@@ -562,22 +562,30 @@ angular.module('JervDesignJsValueEditor').directive(
              */
             function link($scope, element, attrs) {
 
-                var valueData = attrs.valueData;
-
-                if (!valueData) {
-                    console.error("value-data attribute missing");
+                if (!$scope.valueData) {
+                    console.error("value-data attribute missing or empty");
                 }
 
-                $scope.schemas = [];
+                $scope.schemas = JervDesignJsValueEditorService.getDataSchema(
+                    "schemas",
+                    $scope.valueData
+                );
 
-                $scope.$watch('valueData', function(value){
-                    if(value){
-                        $scope.schemas = JervDesignJsValueEditorService.getDataSchema(
-                            "schemas",
-                            value
-                        );
-                    }
-                });
+                console.log($scope.schemas);
+
+                var displayElm = element.find('.scheme-entries');
+                displayElm.empty();
+
+                var directiveElm;
+                var directiveName;
+                var directiveValue;
+                for (var ns in $scope.schemas) {
+                    directiveName = $scope.schemas[ns].directive;
+                    directiveValue = JSON.stringify($scope.schemas[ns].directive);
+                    directiveElm = jQuery('<div>'+directiveName+'</div>');
+                    directiveElm.attr(directiveName, directiveValue);
+                    displayElm.append(directiveElm);
+                }
             }
 
             return {

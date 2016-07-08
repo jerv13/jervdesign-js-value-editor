@@ -6,7 +6,7 @@ var JervDesignJsValueEditorService = function (
 
     var typeServices = {};
 
-    self.libPath = '/vendor/jervdesign-js-value-editor/dist/';
+    self.libPath = '/bower_components/jervdesign-js-value-editor/dist/';
 
     /**
      *
