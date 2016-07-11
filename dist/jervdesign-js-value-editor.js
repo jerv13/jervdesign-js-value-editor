@@ -574,8 +574,7 @@ var JervDesignJsValueEditorService = function (
     self.getParentSchemaData = function (ns) {
         var schemaName = self.getSchemaName(ns);
         var dataParentNs = self.getParentNs(ns);
-        console.log(self.schemas[schemaName]);
-        return self.schemas[schemaName][dataParentNs];
+        return self.schemas[schemaName].schema[dataParentNs];
     };
 
     self.getKey = function (ns) {
@@ -593,6 +592,17 @@ var JervDesignJsValueEditorService = function (
         var nsParts = ns.split('.');
         var last = nsParts.length - 1;
         nsParts.splice(last, 1);
+        return nsParts.join('.');
+    };
+
+    self.getDataParentNs = function (ns) {
+        var nsParts = ns.split('.');
+        var last = nsParts.length - 1;
+        nsParts.splice(last, 1);
+        nsParts.splice(0, 1);
+        if(nsParts.length < 1) {
+            return '';
+        }
         return nsParts.join('.');
     };
 
@@ -618,13 +628,16 @@ var JervDesignJsValueEditorService = function (
      */
     self.createDataSchema = function (ns, value) {
         var schemaName = self.getSchemaName(ns);
-        var dataParentNs = self.getParentNs(ns);
         var key = self.getKey(ns);
-        var parentType = self.schemas[schemaName].schema[ns].parentType;
+        var dataParentNs = self.getDataParentNs(ns);
+        if(dataParentNs) {
+            dataParentNs = '.' + dataParentNs
+        }
+        var parentSchema = self.getParentSchemaData(ns);
         var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data.' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
 
-        typeServices[parentType].createValue(key, value, parentSchemaValue);
+        typeServices[parentSchema.type].createValue(key, value, parentSchemaValue);
 
         self.refreshDataSchema(schemaName);
     };
@@ -636,13 +649,16 @@ var JervDesignJsValueEditorService = function (
      */
     self.updateDataSchema = function (ns, value) {
         var schemaName = self.getSchemaName(ns);
-        var dataParentNs = self.getParentNs(ns);
         var key = self.getKey(ns);
-        var parentType = self.schemas[schemaName].schema[ns].parentType;
+        var dataParentNs = self.getDataParentNs(ns);
+        if(dataParentNs) {
+            dataParentNs = '.' + dataParentNs
+        }
+        var parentSchema = self.getParentSchemaData(ns);
         var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data.' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
 
-        typeServices[parentType].updateValue(key, value, parentSchemaValue);
+        typeServices[parentSchema.type].updateValue(key, value, parentSchemaValue);
 
         self.refreshDataSchema(schemaName);
     };
@@ -653,13 +669,18 @@ var JervDesignJsValueEditorService = function (
      */
     self.deleteDataSchema = function (ns) {
         var schemaName = self.getSchemaName(ns);
-        var dataParentNs = self.getParentNs(ns);
         var key = self.getKey(ns);
-        var parentType = self.schemas[schemaName].schema[ns].parentType;
-        var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data.' + dataParentNs);
+        var dataParentNs = self.getDataParentNs(ns);
+        if(dataParentNs) {
+            dataParentNs = '.' + dataParentNs
+        }
+        var parentSchema = self.getParentSchemaData(ns);
 
-        typeServices[parentType].deleteValue(key, parentSchemaValue);
+        var parentSchemaValue = null;
+        console.log('self.schemas.' + schemaName + '.data.' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
+
+        typeServices[parentSchema.type].deleteValue(key, parentSchemaValue);
 
         self.refreshDataSchema(schemaName);
     };
@@ -688,6 +709,8 @@ var JervDesignJsValueEditorService = function (
         self.schemas[schemaName] = {};
         self.schemas[schemaName].data = data;
         self.schemas[schemaName].schema = self.buildDataSchema(schemaName, data, {});
+
+        JervDesignJsValueEditorEvents.trigger('newSchema', self.schemas[schemaName]);
         return self.schemas[schemaName];
     };
 
@@ -709,14 +732,9 @@ var JervDesignJsValueEditorService = function (
         }
         var type = self.getType(name, value);
 
-        var parentSchemaData = self.getParentSchemaData(name);
-
-        console.log(parentSchemaData);
-
         var schema = new JervDesignJsValueEditorDataSchema();
 
         schema.type = type;
-        schema.parentType = parentSchemaData.schema.type;
         schema.name = name;
         schema.value = value;
         schema.original = value;
