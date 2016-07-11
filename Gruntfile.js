@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     var files = [
         'src/module.js',
         'src/config.js',
+        'src/events.js',
         'src/data-schema.js',
         'src/data-type.js',
         'src/filter-validate-result.js',

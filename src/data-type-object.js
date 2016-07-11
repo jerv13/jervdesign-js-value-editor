@@ -8,22 +8,49 @@ angular.module('JervDesignJsValueEditor').service(
             JervDesignJsValueEditorService
         ) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "object";
-            service.description = "Handles objects";
-            service.directive = "jerv-design-js-value-editor-field-literal";
-            service.display = false;
-            service.buildSchemaValues = function (name, value, schemas) {
+            dataType.type = "object";
+            dataType.description = "Handles objects";
+            dataType.directive = "jerv-design-js-value-editor-field-literal";
+            dataType.buildSchemaValues = function (name, value, schemas) {
                 for (var prop in value) {
-                    JervDesignJsValueEditorService.getDataSchema(
+                    JervDesignJsValueEditorService.buildDataSchema(
                         name + '.' + prop,
                         value[prop],
                         schemas
                     )
                 }
             };
-            return service;
+            /**
+             * createValue
+             * @param key
+             * @param subValue
+             * @param schemaValue
+             */
+            dataType.createValue = function (key, subValue, schemaValue) {
+                schemaValue[key] = subValue;
+            };
+
+            /**
+             * updateValue
+             * @param key
+             * @param subValue
+             * @param schemaValue
+             */
+            dataType.updateValue = function (key, subValue, schemaValue) {
+                schemaValue[key] = subValue;
+            };
+
+            /**
+             * deleteValue
+             * @param key
+             */
+            dataType.deleteValue = function (key, schemaValue) {
+                delete schemaValue[key]
+            };
+
+            return dataType;
         }
     ]
 );

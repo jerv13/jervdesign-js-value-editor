@@ -10,9 +10,21 @@ angular.module('JervDesignJsValueEditor').directive(
              * @param attrs
              */
             function link($scope, element, attrs) {
-                $scope.onSave = function () {
-                    JervDesignJsValueEditorService.getDataSchema();
-                }
+
+                $scope.save = function () {
+                    try {
+                        var value = JSON.parse($scope.schemadata.displayValue);
+                    } catch (err) {
+                        alert('Invalid JSON');
+                        return;
+                    }
+
+                    JervDesignJsValueEditorService.updateDataSchema($scope.schemadata.name, value);
+                };
+
+                $scope.delete = function () {
+                    JervDesignJsValueEditorService.deleteDataSchema($scope.schemadata.name);
+                };
             }
 
             return {
@@ -20,21 +32,8 @@ angular.module('JervDesignJsValueEditor').directive(
                 scope: {
                     schemadata: '='
                 },
-                template: '' +
-                '<div class="col-sm-6" ng-if="schemadata.display">' +
-                ' <strong>' +
-                '  <span ng-show="schemadata.title">{{schemadata.title}}</span> ' +
-                '  <span ng-hide="schemadata.title">{{schemadata.name}}</span> ' +
-                ' </strong>' +
-                ' <span>({{schemadata.type}})</span> ' +
-                ' <button ng-click="onSave()">save</button> ' +
-                '</div>' +
-                '<div class="col-sm-6">' +
-                ' <div>Value: {{schemadata.displayValue}}</div>' +
-                '</div>' +
-                '<div class="col-sm-12">' +
-                ' <textarea ng-model="schemadata.displayValue"></textarea>' +
-                '</div>'
+                templateUrl: JervDesignJsValueEditorService.libPath + 'field.html'
+
             }
         }
     ]

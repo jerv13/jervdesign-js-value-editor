@@ -18,13 +18,7 @@ var JervDesignJsValueEditorFilterDataType = function () {
      * @type {string}
      */
     dataType.directive = "";
-
-    /**
-     * display
-     * @type {boolean}
-     */
-    dataType.display = true;
-
+    
     /**
      * buildSchemaValues
      * @param name
@@ -35,28 +29,29 @@ var JervDesignJsValueEditorFilterDataType = function () {
     };
 
     /**
-     * getDisplayValue
-     * - returns a string representation of data
-     * - null if it should not be display
-     *
-     * @param name
-     * @param value
-     * @returns {string|null}
+     * createValue
+     * @param key
+     * @param subValue
+     * @param schemaValue
      */
-    dataType.getDisplayValue = function (name, value) {
-        return JSON.stringify(value);
+    dataType.createValue = function (key, subValue, schemaValue) {
     };
 
     /**
-     * getDataValue
-     * - returns the value in its native format
-     *
-     * @param name
-     * @param displayValue
-     * @returns {mixed}
+     * updateValue
+     * @param key
+     * @param subValue
+     * @param schemaValue
      */
-    dataType.getDataValue = function (name, displayValue) {
-        return JSON.parse(displayValue);
+    dataType.updateValue = function (key, subValue, schemaValue) {
+    };
+
+    /**
+     * deleteValue
+     * @param key
+     * @param schemaValue
+     */
+    dataType.deleteValue = function (key, schemaValue) {
     };
 
     /**

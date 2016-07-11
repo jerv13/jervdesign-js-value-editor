@@ -16,6 +16,7 @@ angular.module('JervDesignJsValueEditor').directive(
             function link($scope, element, attrs) {
 
                 var rootNamespace = attrs.rootNamespace;
+                var events = JervDesignJsValueEditorService.getEvents();
 
                 if (!rootNamespace) {
                     rootNamespace = "root"
@@ -25,35 +26,43 @@ angular.module('JervDesignJsValueEditor').directive(
                     console.error("value-data attribute missing or empty");
                 }
 
-                $scope.schemas = JervDesignJsValueEditorService.getDataSchema(
+                var schemaData = JervDesignJsValueEditorService.newDataSchema(
                     rootNamespace,
                     $scope.valueData
                 );
-                console.log($scope.valueData);
-                console.log($scope.schemas);
+                
+                var buildSchema = function (schemaData) {
 
-                var displayElm = element.find('.scheme-entries');
-                displayElm.empty();
+                    $scope.schemas = schemaData.schema;
+                    
+                    var displayElm = element.find('.scheme-entries');
+                    displayElm.empty();
 
-                var directiveElm;
-                var directiveName;
-                var directiveValue;
-                for (var ns in $scope.schemas) {
-                    if (!$scope.schemas[ns].display || ns === rootNamespace) {
-                        continue;
+                    var directiveElm;
+                    var directiveName;
+                    var directiveValue;
+                    
+                    for (var ns in $scope.schemas) {
+                        if (ns === rootNamespace) {
+                            continue;
+                        }
+                        directiveName = $scope.schemas[ns].directive;
+                        directiveValue = "schemas['" + ns + "']";
+                        //directiveElm = jQuery('<div ' + directiveName + ' schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
+                        directiveElm = jQuery('<div jerv-design-js-value-editor-field="" schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
+                        // directiveElm.attr(directiveName, directiveValue);
+                        directiveElm.attr('class', 'row');
+                        displayElm.append(directiveElm);
                     }
-                    directiveName = $scope.schemas[ns].directive;
-                    directiveValue = "schemas['" + ns + "']";
-                    //directiveElm = jQuery('<div ' + directiveName + ' schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
-                    directiveElm = jQuery('<div jerv-design-js-value-editor-field="" schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
-                    // directiveElm.attr(directiveName, directiveValue);
-                    directiveElm.attr('class', 'row');
-                    displayElm.append(directiveElm);
-                }
 
-                $compile(
-                    displayElm
-                )($scope)
+                    $compile(
+                        displayElm
+                    )($scope)
+                };
+
+                buildSchema(schemaData);
+
+                events.on('updateSchema', 'JervDesignJsValueEditor', buildSchema);
             }
 
             return {

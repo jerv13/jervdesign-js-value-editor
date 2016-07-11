@@ -1,0 +1,26 @@
+<div class="js-value-editor value-display">
+    <div class="col-sm-6">
+        <div class="value-ns">
+            <a href="javascript:void(0)"
+               ng-click="showEdit=!showEdit">{{schemadata.name}}</a>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default value-edit"
+             ng-show="showEdit">
+            <div class="panel-heading">
+                <span class="panel-title">
+                    <span ng-show="schemadata.title">{{schemadata.title}}</span>
+                    <span ng-hide="schemadata.title">{{schemadata.name}}</span>
+                    <span>({{schemadata.type}})</span>
+                    <button class="btn btn-default" ng-click="save()">save</button>
+                    <button class="btn btn-default" ng-click="delete()">delete</button>
+                    <button class="btn btn-default" ng-click="showEdit=false">cancel</button>
+                </span>
+            </div>
+            <div class="panel-body">
+                <textarea ng-model="schemadata.displayValue"></textarea>
+            </div>
+        </div>
+    </div>
+</div>

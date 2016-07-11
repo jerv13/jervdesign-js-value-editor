@@ -31,12 +31,10 @@
                     var testSpecial = new self.TestSpecial();
 
                     self.testData = {
-                        "rliteral": {"literalKey": "value"},
                         "rstring": "StringValue",
                         "rnull": null,
                         "rnumber": 123.123,
                         "robject": {
-                            "oliteral": '{"oliteralKey": "ovalue"}',
                             "ostring": "oStringValue",
                             "onull": "",
                             "onumber": 123.123,
@@ -47,7 +45,6 @@
                             "oboolean": true
                         },
                         "rarray": [
-                            '{"aliteralKey": "avalue"}',
                             "aStringValue",
                             "",
                             123.123,
@@ -59,6 +56,11 @@
                         ],
                         "rboolean": true,
                         "testSpecial": testSpecial
+                    };
+
+                    self.testData = {
+                        "rstring": "StringValue",
+                        "rnull": null,
                     };
                 }
         );

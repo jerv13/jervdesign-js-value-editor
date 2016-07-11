@@ -9,8 +9,3 @@ ToDo:
 - Shall be able to Add
 
 NOTES:
-
-- Use json as display value so we only need encode and stringify
-- make schema models a var in service that can be referenced
-- on a value update, redetermine the type
-- 
