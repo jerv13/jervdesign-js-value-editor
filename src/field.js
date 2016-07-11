@@ -10,6 +10,48 @@ angular.module('JervDesignJsValueEditor').directive(
              * @param attrs
              */
             function link($scope, element, attrs) {
+                $scope.typeChanged = false;
+
+                $scope.createData = {
+                    key: '',
+                    displayValue: ''
+                };
+
+                $scope.onRawChange = function () {
+                    $scope.typeChanged = ($scope.schemadata.originalDisplayValue !== $scope.schemadata.displayValue);
+                };
+
+                var onUpdate = function () {
+                    $scope.showedit = false;
+                };
+
+                $scope.cancel = function () {
+                    $scope.schemadata.displayValue = $scope.schemadata.originalDisplayValue;
+                    $scope.schemadata.value = $scope.schemadata.originalValue;
+                    $scope.schemadata.type = $scope.schemadata.originalType;
+                    onUpdate();
+                };
+
+                $scope.create = function () {
+                    try {
+                        var value = JSON.parse($scope.createData.displayValue);
+                    } catch (err) {
+                        alert('Invalid JSON');
+                        return;
+                    }
+
+                    if (!$scope.createData.key) {
+                        alert('Key is required');
+                        return;
+                    }
+
+                    JervDesignJsValueEditorService.createValue(
+                        $scope.schemadata.name + '.' + $scope.createData.key,
+                        $scope.createData.key,
+                        value
+                    );
+                    onUpdate();
+                };
 
                 $scope.save = function () {
                     try {
@@ -19,18 +61,26 @@ angular.module('JervDesignJsValueEditor').directive(
                         return;
                     }
 
-                    JervDesignJsValueEditorService.updateDataSchema($scope.schemadata.name, value);
+                    JervDesignJsValueEditorService.updateValue(
+                        $scope.schemadata.name,
+                        value
+                    );
+                    onUpdate();
                 };
 
                 $scope.delete = function () {
-                    JervDesignJsValueEditorService.deleteDataSchema($scope.schemadata.name);
+                    JervDesignJsValueEditorService.deleteValue(
+                        $scope.schemadata.name
+                    );
+                    onUpdate();
                 };
             }
 
             return {
                 link: link,
                 scope: {
-                    schemadata: '='
+                    schemadata: '=',
+                    showedit: "="
                 },
                 templateUrl: JervDesignJsValueEditorService.libPath + 'field.html'
 

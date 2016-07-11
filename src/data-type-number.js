@@ -4,12 +4,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "number";
-            service.description = "Handles numbers";
-            service.directive = "jerv-design-js-value-editor-field-number";
-            return service;
+            dataType.type = "number";
+            dataType.description = "Handles numbers";
+            dataType.directive = "jerv-design-js-value-editor-field-number";
+            return dataType;
         }
     ]
 );

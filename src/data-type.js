@@ -18,6 +18,30 @@ var JervDesignJsValueEditorFilterDataType = function () {
      * @type {string}
      */
     dataType.directive = "";
+
+    /**
+     * canCreateValue
+     * @type {boolean}
+     */
+    dataType.canCreateValue = false;
+
+    /**
+     * canUpdateValue
+     * @type {boolean}
+     */
+    dataType.canUpdateValue = false;
+
+    /**
+     * canDeleteValue
+     * @type {boolean}
+     */
+    dataType.canDeleteValue = false;
+
+    /**
+     * rebuildOnChange
+     * @type {boolean}
+     */
+    dataType.rebuildOnChange = false;
     
     /**
      * buildSchemaValues

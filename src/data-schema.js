@@ -9,7 +9,13 @@ var JervDesignJsValueEditorDataSchema = function () {
      * type
      * @type {string}
      */
-    self.type = "literal";
+    self.type = "null";
+
+    /**
+     * originalType
+     * @type {string}
+     */
+    self.originalType = "null";
 
     /**
      * name
@@ -24,17 +30,22 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.value = null;
 
     /**
+     * originalValue
+     * @type {null}
+     */
+    self.originalValue = null;
+
+    /**
      * displayValue
      * @type {string}
      */
     self.displayValue = "";
 
-    // From schema
     /**
-     * title
+     * originalDisplayValue
      * @type {string}
      */
-    self.title = self.name;
+    self.originalDisplayValue = "";
 
     /**
      * directive
@@ -49,12 +60,6 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.filterValidate = function () {
         return new JervDesignJsValueEditorFilterValidateResult;
     };
-
-    /**
-     * set a new display value if is function
-     * @type {null}
-     */
-    self.addDisplayValue = null;
 };
 
 

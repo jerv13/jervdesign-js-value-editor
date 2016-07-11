@@ -126,7 +126,13 @@ var JervDesignJsValueEditorDataSchema = function () {
      * type
      * @type {string}
      */
-    self.type = "literal";
+    self.type = "null";
+
+    /**
+     * originalType
+     * @type {string}
+     */
+    self.originalType = "null";
 
     /**
      * name
@@ -141,17 +147,22 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.value = null;
 
     /**
+     * originalValue
+     * @type {null}
+     */
+    self.originalValue = null;
+
+    /**
      * displayValue
      * @type {string}
      */
     self.displayValue = "";
 
-    // From schema
     /**
-     * title
+     * originalDisplayValue
      * @type {string}
      */
-    self.title = self.name;
+    self.originalDisplayValue = "";
 
     /**
      * directive
@@ -166,12 +177,6 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.filterValidate = function () {
         return new JervDesignJsValueEditorFilterValidateResult;
     };
-
-    /**
-     * set a new display value if is function
-     * @type {null}
-     */
-    self.addDisplayValue = null;
 };
 
 
@@ -204,6 +209,30 @@ var JervDesignJsValueEditorFilterDataType = function () {
      * @type {string}
      */
     dataType.directive = "";
+
+    /**
+     * canCreateValue
+     * @type {boolean}
+     */
+    dataType.canCreateValue = false;
+
+    /**
+     * canUpdateValue
+     * @type {boolean}
+     */
+    dataType.canUpdateValue = false;
+
+    /**
+     * canDeleteValue
+     * @type {boolean}
+     */
+    dataType.canDeleteValue = false;
+
+    /**
+     * rebuildOnChange
+     * @type {boolean}
+     */
+    dataType.rebuildOnChange = false;
     
     /**
      * buildSchemaValues
@@ -300,22 +329,18 @@ angular.module('JervDesignJsValueEditor').service(
             dataType.type = "array";
             dataType.description = "Handles array";
             dataType.directive = "jerv-design-js-value-editor-field-literal";
+            dataType.canCreateValue = true;
+            dataType.canUpdateValue = true;
+            dataType.canDeleteValue = true;
+            dataType.rebuildOnChange = true;
             dataType.buildSchemaValues = function (name, value, schemas) {
                 for (var i = 0; i < value.length; i++) {
                     JervDesignJsValueEditorService.buildDataSchema(
-                        name + '.' + i + '',
+                        name + '.' + i,
                         value[i],
                         schemas
                     );
                 }
-            };
-            /**
-             * buildSchemaValues
-             * @param name
-             * @param value
-             * @param schema
-             */
-            dataType.buildSchemaValues = function (name, value, schema) {
             };
 
             /**
@@ -325,7 +350,8 @@ angular.module('JervDesignJsValueEditor').service(
              * @param schemaValue
              */
             dataType.createValue = function (key, subValue, schemaValue) {
-                schemaValue.push(subValue)
+                key = Number(key);
+                schemaValue[key] = subValue;
             };
 
             /**
@@ -335,6 +361,7 @@ angular.module('JervDesignJsValueEditor').service(
              * @param schemaValue
              */
             dataType.updateValue = function (key, subValue, schemaValue) {
+                key = Number(key);
                 schemaValue[key] = subValue;
             };
 
@@ -357,12 +384,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "boolean";
-            service.description = "Handles booleans";
-            service.directive = "jerv-design-js-value-editor-field-boolean";
-            return service;
+            dataType.type = "boolean";
+            dataType.description = "Handles booleans";
+            dataType.directive = "jerv-design-js-value-editor-field-boolean";
+            return dataType;
         }
     ]
 );
@@ -373,12 +400,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "literal";
-            service.description = "Handles literals as strings";
-            service.directive = "jerv-design-js-value-editor-field-literal";
-            return service;
+            dataType.type = "literal";
+            dataType.description = "Handles literals as strings";
+            dataType.directive = "jerv-design-js-value-editor-field-literal";
+            return dataType;
         }
     ]
 );
@@ -389,12 +416,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "null";
-            service.description = "Handles nulls";
-            service.directive = "jerv-design-js-value-editor-field-literal";
-            return service;
+            dataType.type = "null";
+            dataType.description = "Handles nulls";
+            dataType.directive = "jerv-design-js-value-editor-field-literal";
+            return dataType;
         }
     ]
 );
@@ -405,12 +432,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "number";
-            service.description = "Handles numbers";
-            service.directive = "jerv-design-js-value-editor-field-number";
-            return service;
+            dataType.type = "number";
+            dataType.description = "Handles numbers";
+            dataType.directive = "jerv-design-js-value-editor-field-number";
+            return dataType;
         }
     ]
 );
@@ -430,6 +457,10 @@ angular.module('JervDesignJsValueEditor').service(
             dataType.type = "object";
             dataType.description = "Handles objects";
             dataType.directive = "jerv-design-js-value-editor-field-literal";
+            dataType.canCreateValue = true;
+            dataType.canUpdateValue = true;
+            dataType.canDeleteValue = true;
+            dataType.rebuildOnChange = true;
             dataType.buildSchemaValues = function (name, value, schemas) {
                 for (var prop in value) {
                     JervDesignJsValueEditorService.buildDataSchema(
@@ -478,12 +509,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "string";
-            service.description = "Handles strings and nulls";
-            service.directive = "jerv-design-js-value-editor-field-string";
-            return service;
+            dataType.type = "string";
+            dataType.description = "Handles strings and nulls";
+            dataType.directive = "jerv-design-js-value-editor-field-string";
+            return dataType;
         }
     ]
 );
@@ -499,6 +530,7 @@ var JervDesignJsValueEditorService = function (
 
     self.libPath = '/bower_components/jervdesign-js-value-editor/dist/';
     self.schemas = {};
+    self.loadingSchema = {};
 
     /**
      * getEvents
@@ -506,6 +538,11 @@ var JervDesignJsValueEditorService = function (
      */
     self.getEvents = function () {
         return JervDesignJsValueEditorEvents;
+    };
+    
+    self.setLoading = function (schemaName, loading) {
+        self.loadingSchema[schemaName] = loading;
+        JervDesignJsValueEditorEvents.trigger('loadingSchema', {schemaName: schemaName, Loading: loading});
     };
 
     /**
@@ -613,22 +650,13 @@ var JervDesignJsValueEditorService = function (
     };
 
     /**
-     *
+     * createValue
      * @param ns
-     * @returns {*}
-     */
-    self.getDataSchema = function (ns) {
-        return self.schemas[self.getSchemaName(ns)];
-    };
-
-    /**
-     * createDataSchema
-     * @param ns
+     * @param key
      * @param value
      */
-    self.createDataSchema = function (ns, value) {
+    self.createValue = function (ns, key, value) {
         var schemaName = self.getSchemaName(ns);
-        var key = self.getKey(ns);
         var dataParentNs = self.getDataParentNs(ns);
         if(dataParentNs) {
             dataParentNs = '.' + dataParentNs
@@ -639,20 +667,26 @@ var JervDesignJsValueEditorService = function (
 
         typeServices[parentSchema.type].createValue(key, value, parentSchemaValue);
 
-        self.refreshDataSchema(schemaName);
+        if(typeServices[parentSchema.type].rebuildOnChange) {
+            self.refreshDataSchema(schemaName);
+        }
     };
 
     /**
-     * updateDataSchema
+     * updateValue
      * @param ns
      * @param value
      */
-    self.updateDataSchema = function (ns, value) {
+    self.updateValue = function (ns, value) {
         var schemaName = self.getSchemaName(ns);
         var key = self.getKey(ns);
         var dataParentNs = self.getDataParentNs(ns);
         if(dataParentNs) {
             dataParentNs = '.' + dataParentNs
+        }
+        var dataNs = self.getDataNs(ns);
+        if(dataNs) {
+            dataNs = '.' + dataNs
         }
         var parentSchema = self.getParentSchemaData(ns);
         var parentSchemaValue = null;
@@ -660,14 +694,16 @@ var JervDesignJsValueEditorService = function (
 
         typeServices[parentSchema.type].updateValue(key, value, parentSchemaValue);
 
-        self.refreshDataSchema(schemaName);
+        if(typeServices[parentSchema.type].rebuildOnChange) {
+            self.refreshDataSchema(schemaName);
+        }
     };
 
     /**
-     * deleteDataSchema
+     * deleteValue
      * @param ns
      */
-    self.deleteDataSchema = function (ns) {
+    self.deleteValue = function (ns) {
         var schemaName = self.getSchemaName(ns);
         var key = self.getKey(ns);
         var dataParentNs = self.getDataParentNs(ns);
@@ -677,12 +713,23 @@ var JervDesignJsValueEditorService = function (
         var parentSchema = self.getParentSchemaData(ns);
 
         var parentSchemaValue = null;
-        console.log('self.schemas.' + schemaName + '.data.' + dataParentNs);
         eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
 
         typeServices[parentSchema.type].deleteValue(key, parentSchemaValue);
 
-        self.refreshDataSchema(schemaName);
+        delete self.schemas[schemaName].schema[ns];
+        if(typeServices[parentSchema.type].rebuildOnChange) {
+            self.refreshDataSchema(schemaName);
+        }
+    };
+
+    /**
+     *
+     * @param ns
+     * @returns {*}
+     */
+    self.getDataSchema = function (ns) {
+        return self.schemas[self.getSchemaName(ns)];
     };
 
     /**
@@ -690,6 +737,7 @@ var JervDesignJsValueEditorService = function (
      * @param schemaName
      */
     self.refreshDataSchema = function (schemaName) {
+        self.setLoading(schemaName, true);
         self.schemas[schemaName].schema = {};
         self.buildDataSchema(
             schemaName,
@@ -698,6 +746,7 @@ var JervDesignJsValueEditorService = function (
         );
 
         JervDesignJsValueEditorEvents.trigger('updateSchema', self.schemas[schemaName]);
+        self.setLoading(schemaName, false);
     };
 
     /**
@@ -706,11 +755,14 @@ var JervDesignJsValueEditorService = function (
      * @param data
      */
     self.newDataSchema = function (schemaName, data) {
+        self.setLoading(schemaName, true);
         self.schemas[schemaName] = {};
         self.schemas[schemaName].data = data;
         self.schemas[schemaName].schema = self.buildDataSchema(schemaName, data, {});
 
         JervDesignJsValueEditorEvents.trigger('newSchema', self.schemas[schemaName]);
+        self.setLoading(schemaName, false);
+
         return self.schemas[schemaName];
     };
 
@@ -735,11 +787,13 @@ var JervDesignJsValueEditorService = function (
         var schema = new JervDesignJsValueEditorDataSchema();
 
         schema.type = type;
+        schema.originalType = type;
         schema.name = name;
         schema.value = value;
-        schema.original = value;
+        schema.originalValue = value;
         schema.displayValue = JSON.stringify(value);
-        schema.directive = typeServices[type].directive;
+        schema.originalDisplayValue = JSON.stringify(value);
+        schema.dataType = typeServices[type];
         schemas[name] = schema;
 
         typeServices[type].buildSchemaValues(
@@ -784,6 +838,63 @@ angular.module('JervDesignJsValueEditor').service(
     ]
 );
 
+angular.module('JervDesignJsValueEditor').filter(
+    'JervDesignJsValueEditorLimitLength',
+    function () {
+        return function (input, length) {
+            input = "" + input;
+            var result = input.substring(0, length);
+
+            if(result.length !== input.length) {
+                result = result + ' ...';
+            }
+
+            return result;
+        };
+    }
+);
+
+angular.module('JervDesignJsValueEditor').filter(
+    'JervDesignJsValueEditorNsFormatFilter',
+    function () {
+        return function (ns) {
+            ns = "" + ns;
+
+            var nsParts = ns.split('.');
+            var count = nsParts.length;
+            var last = count - 1;
+            var spaceCnt = count - 1;
+
+            var spaces = Array(spaceCnt).join("- - ");
+
+
+            return spaces + ' ' + nsParts[last];
+        };
+    }
+);
+
+angular.module('JervDesignJsValueEditor').filter(
+    'JervDesignJsValueEditorSchemaSearchFilter',
+    function () {
+        return function (input, length) {
+            if (!query) {
+                return input
+            }
+            var result = {};
+            var regex = new RegExp(query, 'i');
+            angular.forEach(
+                input,
+                function (site) {
+                    if (site.domain && regex.test(site.domainName)) {
+                        result[site.siteId] = site;
+                    }
+                }
+            );
+            return result;
+        };
+    }
+);
+
 angular.module('JervDesignJsValueEditor').directive(
     'jervDesignJsValueEditorStandardDisplay',
     [
@@ -800,12 +911,21 @@ angular.module('JervDesignJsValueEditor').directive(
              * @param attrs
              */
             function link($scope, element, attrs) {
-
-                var rootNamespace = attrs.rootNamespace;
                 var events = JervDesignJsValueEditorService.getEvents();
+                $scope.rootNamespace = attrs.rootNamespace;
+                $scope.loadingSchema = JervDesignJsValueEditorService.loadingSchema;
+                $scope.showedit = {};
 
-                if (!rootNamespace) {
-                    rootNamespace = "root"
+                var loadingSchema = function (loadingData) {
+                    if(loadingData.schemaName = $scope.rootNamespace) {
+                        $scope.loadingSchema = loadingData.loading;
+                    }
+                };
+
+                events.on('loadingSchema', 'JervDesignJsValueEditor', loadingSchema);
+
+                if (!$scope.rootNamespace) {
+                    $scope.rootNamespace = "root"
                 }
 
                 if (!$scope.valueData) {
@@ -813,37 +933,35 @@ angular.module('JervDesignJsValueEditor').directive(
                 }
 
                 var schemaData = JervDesignJsValueEditorService.newDataSchema(
-                    rootNamespace,
+                    $scope.rootNamespace,
                     $scope.valueData
                 );
-                
+
                 var buildSchema = function (schemaData) {
 
                     $scope.schemas = schemaData.schema;
-                    
-                    var displayElm = element.find('.scheme-entries');
-                    displayElm.empty();
 
-                    var directiveElm;
-                    var directiveName;
-                    var directiveValue;
-                    
-                    for (var ns in $scope.schemas) {
-                        if (ns === rootNamespace) {
-                            continue;
-                        }
-                        directiveName = $scope.schemas[ns].directive;
-                        directiveValue = "schemas['" + ns + "']";
-                        //directiveElm = jQuery('<div ' + directiveName + ' schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
-                        directiveElm = jQuery('<div jerv-design-js-value-editor-field="" schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
-                        // directiveElm.attr(directiveName, directiveValue);
-                        directiveElm.attr('class', 'row');
-                        displayElm.append(directiveElm);
-                    }
+                    // var displayElm = element.find('.scheme-entries');
+                    // displayElm.empty();
+                    //
+                    // var directiveElm;
+                    // var directiveName;
+                    // var directiveValue;
 
-                    $compile(
-                        displayElm
-                    )($scope)
+                    // for (var ns in $scope.schemas) {
+                    //     if (ns === rootNamespace) {
+                    //         continue;
+                    //     }
+                    //     directiveName = $scope.schemas[ns].directive;
+                    //     directiveValue = "schemas['" + ns + "']";
+                    //     directiveElm = jQuery('<div jerv-design-js-value-editor-field="" schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
+                    //     directiveElm.attr('class', 'row');
+                    //     displayElm.append(directiveElm);
+                    // }
+                    //
+                    // $compile(
+                    //     displayElm
+                    // )($scope)
                 };
 
                 buildSchema(schemaData);
@@ -874,6 +992,48 @@ angular.module('JervDesignJsValueEditor').directive(
              * @param attrs
              */
             function link($scope, element, attrs) {
+                $scope.typeChanged = false;
+
+                $scope.createData = {
+                    key: '',
+                    displayValue: ''
+                };
+
+                $scope.onRawChange = function () {
+                    $scope.typeChanged = ($scope.schemadata.originalDisplayValue !== $scope.schemadata.displayValue);
+                };
+
+                var onUpdate = function () {
+                    $scope.showedit = false;
+                };
+
+                $scope.cancel = function () {
+                    $scope.schemadata.displayValue = $scope.schemadata.originalDisplayValue;
+                    $scope.schemadata.value = $scope.schemadata.originalValue;
+                    $scope.schemadata.type = $scope.schemadata.originalType;
+                    onUpdate();
+                };
+
+                $scope.create = function () {
+                    try {
+                        var value = JSON.parse($scope.createData.displayValue);
+                    } catch (err) {
+                        alert('Invalid JSON');
+                        return;
+                    }
+
+                    if (!$scope.createData.key) {
+                        alert('Key is required');
+                        return;
+                    }
+
+                    JervDesignJsValueEditorService.createValue(
+                        $scope.schemadata.name + '.' + $scope.createData.key,
+                        $scope.createData.key,
+                        value
+                    );
+                    onUpdate();
+                };
 
                 $scope.save = function () {
                     try {
@@ -883,18 +1043,26 @@ angular.module('JervDesignJsValueEditor').directive(
                         return;
                     }
 
-                    JervDesignJsValueEditorService.updateDataSchema($scope.schemadata.name, value);
+                    JervDesignJsValueEditorService.updateValue(
+                        $scope.schemadata.name,
+                        value
+                    );
+                    onUpdate();
                 };
 
                 $scope.delete = function () {
-                    JervDesignJsValueEditorService.deleteDataSchema($scope.schemadata.name);
+                    JervDesignJsValueEditorService.deleteValue(
+                        $scope.schemadata.name
+                    );
+                    onUpdate();
                 };
             }
 
             return {
                 link: link,
                 scope: {
-                    schemadata: '='
+                    schemadata: '=',
+                    showedit: "="
                 },
                 templateUrl: JervDesignJsValueEditorService.libPath + 'field.html'
 

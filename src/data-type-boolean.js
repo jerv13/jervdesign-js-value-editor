@@ -4,12 +4,12 @@ angular.module('JervDesignJsValueEditor').service(
         'JervDesignJsValueEditorFilterDataType',
         function (JervDesignJsValueEditorFilterDataType) {
 
-            var service = new JervDesignJsValueEditorFilterDataType();
+            var dataType = new JervDesignJsValueEditorFilterDataType();
 
-            service.type = "boolean";
-            service.description = "Handles booleans";
-            service.directive = "jerv-design-js-value-editor-field-boolean";
-            return service;
+            dataType.type = "boolean";
+            dataType.description = "Handles booleans";
+            dataType.directive = "jerv-design-js-value-editor-field-boolean";
+            return dataType;
         }
     ]
 );

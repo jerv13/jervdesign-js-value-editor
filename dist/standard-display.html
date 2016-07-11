@@ -1,4 +1,30 @@
 <div class="js-value-editor">
-    <h2>Editor:</h2>
-    <div class="container-fluid scheme-entries"></div>
+    <div class="loading-schemas" ng-show="loadingSchema">Loading...</div>
+    <div class="search"><input ng-model="search" type="text"/></div>
+    <br/>
+    <div class="container-fluid scheme-entries">
+        <table class="table">
+            <tbody ng-repeat="(ns, schema) in schemas" ng-hide="rootNamespace === ns">
+            <tr class="title-row">
+                <td class="value-ns">
+                    <a href="javascript:void(0)"
+                       ng-click="showedit[ns]=!showedit[ns]">{{schemas[ns].name | JervDesignJsValueEditorNsFormatFilter}}:
+                    </a>
+                </td>
+                <td class="value-ns-value">
+                    {{schemas[ns].displayValue | JervDesignJsValueEditorLimitLength:50 }}
+                </td>
+            </tr>
+            <tr class="edit-row" ng-show="showedit[ns]">
+                <td colspan="2">
+                    <div jerv-design-js-value-editor-field=""
+                         schemadata="schemas[ns]"
+                         showedit="showedit"
+                    >
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

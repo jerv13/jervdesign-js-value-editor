@@ -1,5 +1,4 @@
 module.exports = function (grunt) {
-
     var files = [
         'src/module.js',
         'src/config.js',
@@ -15,15 +14,17 @@ module.exports = function (grunt) {
         'src/data-type-object.js',
         'src/data-type-string.js',
         'src/service.js',
+        'src/limit-length-filter.js',
+        'src/ns-format-filter.js',
+        'src/schema-search-filter.js',
         'src/standard-display.js',
         'src/field.js',
         'src/field-boolean.js',
         'src/field-literal.js',
         'src/field-number.js',
         'src/field-string.js'
-        
     ];
-
+    
     // Project configuration.
     grunt.initConfig(
         {
@@ -56,6 +57,12 @@ module.exports = function (grunt) {
                             expand: true,
                             cwd: 'src',
                             src: '*.html',
+                            dest: 'dist'
+                        },
+                        {
+                            expand: true,
+                            cwd: 'src',
+                            src: '*.css',
                             dest: 'dist'
                         }
                     ]

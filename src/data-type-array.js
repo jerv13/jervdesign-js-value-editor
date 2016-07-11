@@ -13,22 +13,18 @@ angular.module('JervDesignJsValueEditor').service(
             dataType.type = "array";
             dataType.description = "Handles array";
             dataType.directive = "jerv-design-js-value-editor-field-literal";
+            dataType.canCreateValue = true;
+            dataType.canUpdateValue = true;
+            dataType.canDeleteValue = true;
+            dataType.rebuildOnChange = true;
             dataType.buildSchemaValues = function (name, value, schemas) {
                 for (var i = 0; i < value.length; i++) {
                     JervDesignJsValueEditorService.buildDataSchema(
-                        name + '.' + i + '',
+                        name + '.' + i,
                         value[i],
                         schemas
                     );
                 }
-            };
-            /**
-             * buildSchemaValues
-             * @param name
-             * @param value
-             * @param schema
-             */
-            dataType.buildSchemaValues = function (name, value, schema) {
             };
 
             /**
@@ -38,7 +34,8 @@ angular.module('JervDesignJsValueEditor').service(
              * @param schemaValue
              */
             dataType.createValue = function (key, subValue, schemaValue) {
-                schemaValue.push(subValue)
+                key = Number(key);
+                schemaValue[key] = subValue;
             };
 
             /**
@@ -48,6 +45,7 @@ angular.module('JervDesignJsValueEditor').service(
              * @param schemaValue
              */
             dataType.updateValue = function (key, subValue, schemaValue) {
+                key = Number(key);
                 schemaValue[key] = subValue;
             };
 
