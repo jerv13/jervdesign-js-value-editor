@@ -12,16 +12,16 @@ angular.module('JervDesignJsValueEditor').service(
 
             dataType.type = "array";
             dataType.description = "Handles array";
-            dataType.directive = "jerv-design-js-value-editor-field-literal";
             dataType.canCreateValue = true;
             dataType.canUpdateValue = true;
             dataType.canDeleteValue = true;
             dataType.rebuildOnChange = true;
-            dataType.buildSchemaValues = function (name, value, schemas) {
+            dataType.buildSchemaValues = function (name, value, accessor, schemas) {
                 for (var i = 0; i < value.length; i++) {
                     JervDesignJsValueEditorService.buildDataSchema(
                         name + '.' + i,
                         value[i],
+                        accessor + '[' + i+ ']',
                         schemas
                     );
                 }

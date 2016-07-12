@@ -42,14 +42,15 @@ var JervDesignJsValueEditorFilterDataType = function () {
      * @type {boolean}
      */
     dataType.rebuildOnChange = false;
-    
+
     /**
      * buildSchemaValues
      * @param name
      * @param value
+     * @param accessor
      * @param schema
      */
-    dataType.buildSchemaValues = function (name, value, schema) {
+    dataType.buildSchemaValues = function (name, value, accessor, schema) {
     };
 
     /**

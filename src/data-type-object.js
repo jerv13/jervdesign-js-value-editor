@@ -12,16 +12,16 @@ angular.module('JervDesignJsValueEditor').service(
 
             dataType.type = "object";
             dataType.description = "Handles objects";
-            dataType.directive = "jerv-design-js-value-editor-field-literal";
             dataType.canCreateValue = true;
             dataType.canUpdateValue = true;
             dataType.canDeleteValue = true;
             dataType.rebuildOnChange = true;
-            dataType.buildSchemaValues = function (name, value, schemas) {
+            dataType.buildSchemaValues = function (name, value, accessor, schemas) {
                 for (var prop in value) {
                     JervDesignJsValueEditorService.buildDataSchema(
                         name + '.' + prop,
                         value[prop],
+                        accessor + '.' + prop,
                         schemas
                     )
                 }

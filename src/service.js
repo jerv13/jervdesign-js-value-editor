@@ -56,11 +56,9 @@ var JervDesignJsValueEditorService = function (
     self.getType = function (name, value) {
         var type = self.typeOf(value);
 
-        // @todo check schema for type
-
         if (!typeServices[type]) {
-            console.warn('Type ' + type + ' service not available, using literal');
-            type = 'literal';
+            console.warn('Type ' + type + ' service not available');
+            return 'string'
         }
 
         return type;
@@ -126,6 +124,23 @@ var JervDesignJsValueEditorService = function (
         var nsParts = ns.split('.');
         nsParts.splice(0, 1);
         return nsParts.join('.');
+    };
+
+    self.getDataParentAccessor = function (accessor) {
+        var accessorParts = accessor.split('.');
+        var last = nsParts.length - 1;
+        nsParts.splice(last, 1);
+        nsParts.splice(0, 1);
+        if(nsParts.length < 1) {
+            return '';
+        }
+        return nsParts.join('.');
+    };
+
+    self.getDataAccessor = function (accessor) {
+        var accessorParts = accessor.split('.');
+        accessorParts.splice(0, 1);
+        return accessorParts.join('.');
     };
 
     /**
@@ -221,6 +236,7 @@ var JervDesignJsValueEditorService = function (
         self.buildDataSchema(
             schemaName,
             self.schemas[schemaName].data,
+            '',
             self.schemas[schemaName].schema
         );
 
@@ -237,7 +253,7 @@ var JervDesignJsValueEditorService = function (
         self.setLoading(schemaName, true);
         self.schemas[schemaName] = {};
         self.schemas[schemaName].data = data;
-        self.schemas[schemaName].schema = self.buildDataSchema(schemaName, data, {});
+        self.schemas[schemaName].schema = self.buildDataSchema(schemaName, data, '', {});
 
         JervDesignJsValueEditorEvents.trigger('newSchema', self.schemas[schemaName]);
         self.setLoading(schemaName, false);
@@ -247,19 +263,24 @@ var JervDesignJsValueEditorService = function (
 
     /**
      * buildDataSchema
-     * @param name
-     * @param value
-     * @param schemas
+     * @param {string} name (nameSpace)
+     * @param {string} accessor (javascript property accessor)
+     * @param {*} value
+     * @param {*} schemas
      * @returns {JervDesignJsValueEditorDataSchema}
      */
-    self.buildDataSchema = function (name, value, schemas) {
+    self.buildDataSchema = function (name, value, accessor, schemas) {
 
         if (!schemas) {
             schemas = {};
         }
 
+        if (!accessor) {
+            accessor = '';
+        }
+
         if (!name) {
-            name = "";
+            name = '';
         }
         var type = self.getType(name, value);
 
@@ -268,6 +289,7 @@ var JervDesignJsValueEditorService = function (
         schema.type = type;
         schema.originalType = type;
         schema.name = name;
+        schema.accessor = accessor;
         schema.value = value;
         schema.originalValue = value;
         schema.displayValue = JSON.stringify(value);
@@ -278,6 +300,7 @@ var JervDesignJsValueEditorService = function (
         typeServices[type].buildSchemaValues(
             name,
             value,
+            accessor,
             schemas
         );
 

@@ -8,7 +8,6 @@ angular.module('JervDesignJsValueEditor').service(
 
             dataType.type = "null";
             dataType.description = "Handles nulls";
-            dataType.directive = "jerv-design-js-value-editor-field-literal";
             return dataType;
         }
     ]

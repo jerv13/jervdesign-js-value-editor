@@ -24,6 +24,12 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.name = "";
 
     /**
+     * accessor
+     * @type {string}
+     */
+    self.accessor = "";
+
+    /**
      * value
      * @type {mixed}
      */

@@ -9,7 +9,7 @@ angular.module('JervDesignJsValueEditor').filter(
             var last = count - 1;
             var spaceCnt = count - 1;
 
-            var spaces = Array(spaceCnt).join("- - ");
+            var spaces = Array(spaceCnt).join(" -");
             
             return spaces + ' ' + nsParts[last];
         };

@@ -28,7 +28,6 @@ var JervDesignJsValueEditorConfig = {
 angular.module('JervDesignJsValueEditor').run(
     [
         'JervDesignJsValueEditorService',
-        'JervDesignJsValueEditorDataTypeLiteral',
         'JervDesignJsValueEditorDataTypeString',
         'JervDesignJsValueEditorDataTypeNull',
         'JervDesignJsValueEditorDataTypeNumber',
@@ -37,7 +36,6 @@ angular.module('JervDesignJsValueEditor').run(
         'JervDesignJsValueEditorDataTypeBoolean',
         function (
             JervDesignJsValueEditorService,
-            JervDesignJsValueEditorDataTypeLiteral,
             JervDesignJsValueEditorDataTypeString,
             JervDesignJsValueEditorDataTypeNull,
             JervDesignJsValueEditorDataTypeNumber,
@@ -45,9 +43,6 @@ angular.module('JervDesignJsValueEditor').run(
             JervDesignJsValueEditorDataTypeArray,
             JervDesignJsValueEditorDataTypeBoolean
         ) {
-            JervDesignJsValueEditorService.setTypeService(
-                JervDesignJsValueEditorDataTypeLiteral
-            );
             JervDesignJsValueEditorService.setTypeService(
                 JervDesignJsValueEditorDataTypeString
             );
