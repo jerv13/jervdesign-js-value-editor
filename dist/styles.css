@@ -14,3 +14,27 @@
 .js-value-editor tr.edit-row td {
     border-bottom: 1px solid #ddd;
 }
+
+.js-value-editor .btn.btn-array {
+    background-color: lightsalmon;
+}
+
+.js-value-editor .btn.btn-object {
+    background-color: palevioletred;
+}
+
+.js-value-editor .btn.btn-string {
+    background-color: lightblue;
+}
+
+.js-value-editor .btn.btn-number {
+    background-color: lightgreen;
+}
+
+.js-value-editor .btn.btn-null {
+    background-color: #EEEEEE;
+}
+
+.js-value-editor .btn.btn-boolean {
+    background-color: lightgrey;
+}

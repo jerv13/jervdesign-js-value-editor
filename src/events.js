@@ -4,6 +4,8 @@ var JervDesignJsValueEditorEvents = function () {
 
     var listeners = {};
 
+    var promises = {};
+
     self.on = function (event, listenerId, method) {
 
         if (!listeners[event]) {
@@ -12,7 +14,7 @@ var JervDesignJsValueEditorEvents = function () {
 
         listeners[event][listenerId] = method;
 
-        return listenerId;
+        honorPromise(event, method);
     };
 
     self.trigger = function (event, args) {
@@ -30,6 +32,18 @@ var JervDesignJsValueEditorEvents = function () {
                     value(args);
                 }
             }
+        }
+
+        makePromise(event, args);
+    };
+
+    var makePromise = function (event, args) {
+        promises[event] = args;
+    };
+
+    var honorPromise = function (event, method) {
+        if (typeof promises[event] !== 'undefined') {
+            method(promises[event]);
         }
     };
 };

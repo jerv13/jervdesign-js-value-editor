@@ -15,14 +15,12 @@ angular.module('JervDesignJsValueEditor').directive(
              */
             function link($scope, element, attrs) {
                 var events = JervDesignJsValueEditorService.getEvents();
-                $scope.rootNamespace = attrs.rootNamespace;
-                $scope.loadingSchema = JervDesignJsValueEditorService.loadingSchema;
+                //$scope.rootNamespace = attrs.rootNamespace;
+                $scope.loading = JervDesignJsValueEditorService.loading;
                 $scope.showedit = {};
 
-                var loadingSchema = function (loadingData) {
-                    if(loadingData.schemaName = $scope.rootNamespace) {
-                        $scope.loadingSchema = loadingData.loading;
-                    }
+                var loading = function (loading) {
+                    $scope.loading = loading;
                 };
 
                 if (!$scope.rootNamespace) {
@@ -42,16 +40,21 @@ angular.module('JervDesignJsValueEditor').directive(
                     $scope.schemas = schemaData.schema;
                 };
 
+                $scope.save = function () {
+                    JervDesignJsValueEditorService.save($scope.rootNamespace);
+                };
+
                 buildSchema(schemaData);
 
-                events.on('loadingSchema', 'JervDesignJsValueEditor', loadingSchema);
+                events.on('loading', 'JervDesignJsValueEditor', loading);
                 events.on('updateSchema', 'JervDesignJsValueEditor', buildSchema);
             }
 
             return {
                 link: link,
                 scope: {
-                    valueData: '='
+                    valueData: '=',
+                    rootNamespace: '='
                 },
                 templateUrl: JervDesignJsValueEditorService.libPath + 'standard-display.html'
             }

@@ -1,34 +1,56 @@
-<div class="js-value-editor">
-    <div class="loading-schemas" ng-show="loadingSchema">Loading...</div>
-    <div class="search"><input ng-model="search" type="text"/></div>
-    <br/>
-    <div class="container-fluid scheme-entries">
-        <table class="table">
-            <tbody ng-repeat="(ns, schema) in schemas" XXXng-hide="rootNamespace === ns">
-            <tr class="title-row">
-                <td class="value-ns">
-                    <a data-toggle="tooltip"
-                       data-placement="right"
-                       title="{{schemas[ns].name}} (data{{schemas[ns].accessor}})"
-                       href="javascript:void(0)"
-                       ng-click="showedit[ns]=!showedit[ns]">
-                        {{schemas[ns].name | JervDesignJsValueEditorNsFormatFilter}}:
-                    </a>
-                </td>
-                <td class="value-ns-value">
-                    {{schemas[ns].displayValue | JervDesignJsValueEditorLimitLength:50 }}
-                </td>
-            </tr>
-            <tr class="edit-row" ng-show="showedit[ns]">
-                <td colspan="2">
-                    <div jerv-design-js-value-editor-field=""
-                         schemadata="schemas[ns]"
-                         showedit="showedit"
-                    >
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<div class="js-value-editor standard-display">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="loading-schemas" ng-show="loading">Loading...</div>
+            <div class="tools"
+                 ng-hide="loading">
+                <div class="search">
+                    <form class="form-inline">
+                        <label for="ns-search">Search:</label>
+                        <input id="ns-search" ng-model="search" type="text"/>
+                        <button class="btn btn-default btn-sm" ng-click="search=''">clear</button>
+                        <button class="btn btn-primary btn-sm pull-right" ng-click="save()">save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid scheme-entries"
+                 ng-hide="loading">
+                <table class="table">
+                    <tbody ng-repeat="(ns, schema) in schemas | JervDesignJsValueEditorSchemaSearchFilter:search">
+                    <tr class="title-row">
+                        <td class="value-ns">
+                            <a data-toggle="tooltip"
+                               data-placement="right"
+                               title="{{schemas[ns].name}} (data{{schemas[ns].accessor}})"
+                               href="javascript:void(0)"
+                               ng-click="showedit[ns]=!showedit[ns]">
+                                {{schemas[ns].name | JervDesignJsValueEditorNsFormatFilter}}:
+                            </a>
+                        </td>
+                        <td class="value-ns-value">
+                            {{schemas[ns].displayValue | JervDesignJsValueEditorLimitLength:50 }}
+                        </td>
+                        <td class="value-ns-value">
+                            <button class="btn btn-xs btn-{{schemas[ns].type}}"
+                                    ng-click="showedit[ns]=!showedit[ns]">
+                                {{schemas[ns].type}}
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="edit-row" ng-show="showedit[ns]">
+                        <td colspan="3">
+                            <div jerv-design-js-value-editor-field=""
+                                 schemadata="schemas[ns]"
+                                 showedit="showedit"
+                            >
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

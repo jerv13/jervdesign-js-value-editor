@@ -9,7 +9,7 @@ var JervDesignJsValueEditorService = function (
 
     self.libPath = '/bower_components/jervdesign-js-value-editor/dist/';
     self.schemas = {};
-    self.loadingSchema = {};
+    self.loading = [];
 
     /**
      * getEvents
@@ -21,12 +21,27 @@ var JervDesignJsValueEditorService = function (
 
     /**
      * setLoading
-     * @param schemaName
+     * @param name
      * @param loading
      */
-    self.setLoading = function (schemaName, loading) {
-        self.loadingSchema[schemaName] = loading;
-        JervDesignJsValueEditorEvents.trigger('loadingSchema', {schemaName: schemaName, Loading: loading});
+    self.setLoading = function (name, loading) {
+        
+        var index = self.loading.indexOf(name);
+        var isNameLoading = (index > -1);
+        
+        if(loading && !isNameLoading) {
+            self.loading.push(name);
+        }
+
+        if(!loading && isNameLoading) {
+            self.loading.splice(index, 1);
+        }
+
+        var anyLoading = (self.loading.length > 0);
+
+        JervDesignJsValueEditorEvents.trigger('loading', anyLoading);
+        
+        return anyLoading;
     };
 
     /**
@@ -88,6 +103,17 @@ var JervDesignJsValueEditorService = function (
         }
 
         return typeof value;
+    };
+
+    /**
+     * save
+     * @param schemasName
+     */
+    self.save = function (schemasName) {
+
+        var data = self.schemas[schemasName].data;
+
+        JervDesignJsValueEditorEvents.trigger('save:'+schemasName, data);
     };
 
     /**
@@ -189,7 +215,6 @@ var JervDesignJsValueEditorService = function (
      * @param schemaName
      */
     self.refreshDataSchema = function (schemaName) {
-        self.setLoading(schemaName, true);
         self.schemas[schemaName].schema = {};
         self.buildDataSchema(
             schemaName,
@@ -199,7 +224,6 @@ var JervDesignJsValueEditorService = function (
         );
 
         JervDesignJsValueEditorEvents.trigger('updateSchema', self.schemas[schemaName]);
-        self.setLoading(schemaName, false);
     };
 
     /**
@@ -208,14 +232,11 @@ var JervDesignJsValueEditorService = function (
      * @param data
      */
     self.newDataSchema = function (schemaName, data) {
-        self.setLoading(schemaName, true);
         self.schemas[schemaName] = {};
         self.schemas[schemaName].data = data;
         self.schemas[schemaName].schema = self.buildDataSchema(schemaName, data, '', {});
 
         JervDesignJsValueEditorEvents.trigger('newSchema', self.schemas[schemaName]);
-        self.setLoading(schemaName, false);
-
         return self.schemas[schemaName];
     };
 
@@ -228,6 +249,8 @@ var JervDesignJsValueEditorService = function (
      * @returns {JervDesignJsValueEditorDataSchema}
      */
     self.buildDataSchema = function (name, value, accessor, schemas) {
+
+        self.setLoading(name, true);
 
         if (!schemas) {
             schemas = {};
@@ -261,7 +284,7 @@ var JervDesignJsValueEditorService = function (
             accessor,
             schemas
         );
-
+        self.setLoading(name, false);
         return schemas;
     };
 

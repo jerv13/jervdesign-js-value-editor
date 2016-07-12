@@ -24,43 +24,62 @@
     <script type="text/javascript">
         angular.module('JervDesignJsValueEditor').controller(
                 'JervDesignJsValueEditorExample',
-                function () {
-                    var self = this;
-
-                    self.TestSpecial = function () {
+                [
+                    'JervDesignJsValueEditorService',
+                    function (JervDesignJsValueEditorService) {
                         var self = this;
-                        self.specialThing = "test";
-                    };
-                    var testSpecial = new self.TestSpecial();
+                        var events = JervDesignJsValueEditorService.getEvents();
 
-                    self.testData = {
-                        "rstring": "StringValue",
-                        "rnull": null,
-                        "rnumber": 123.123,
-                        "robject": {
-                            "ostring": "oStringValue",
-                            "onull": "",
-                            "onumber": 123.123,
-                            "oobject": {
-                                "objectKey": "ovalue"
+                        self.rootNamspace = 'example_root';
+
+
+                        self.TestSpecial = function () {
+                            var self = this;
+                            self.specialThing = "test";
+                        };
+                        var testSpecial = new self.TestSpecial();
+
+                        self.testData = {
+                            "rstring": "StringValue",
+                            "rnull": null,
+                            "rnumber": 123.123,
+                            "robject": {
+                                "ostring": "oStringValue",
+                                "onull": "",
+                                "onumber": 123.123,
+                                "oobject": {
+                                    "objectKey": "ovalue"
+                                },
+                                "oarray": ['ovalue1', 'ovalue2'],
+                                "oboolean": true
                             },
-                            "oarray": ['ovalue1', 'ovalue2'],
-                            "oboolean": true
-                        },
-                        "rarray": [
-                            "aStringValue",
-                            "",
-                            123.123,
-                            {
-                                "aobjectKey": "value"
-                            },
-                            ['avalue1', 'avalue2'],
-                            true
-                        ],
-                        "rboolean": true,
-                        "testSpecial": testSpecial
-                    };
-                }
+                            "rarray": [
+                                "aStringValue",
+                                "",
+                                123.123,
+                                {
+                                    "aobjectKey": "value"
+                                },
+                                ['avalue1', 'avalue2'],
+                                true
+                            ],
+                            "rboolean": true,
+                            "testSpecial": testSpecial
+                        };
+
+                        ////
+                        events.on(
+                                'save:' + self.rootNamspace,
+                                'JervDesignJsValueEditorExample',
+                                function (data) {
+                                    alert(
+                                            'Data Save:' +
+                                            JSON.stringify(data)
+                                    );
+                                }
+                        );
+                    }
+                ]
         );
     </script>
 </head>
@@ -68,10 +87,19 @@
 <h1>JavaScript Value Editor Example</h1>
 
 <div ng-controller="JervDesignJsValueEditorExample as self">
-
-    <div jerv-design-js-value-editor-standard-display value-data="self.testData">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <div jerv-design-js-value-editor-standard-display
+                     root-namespace="self.rootNamspace"
+                     value-data="self.testData">
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <pre>{{self.testData | json}}</pre>
+            </div>
+        </div>
     </div>
-    <pre>{{self.testData | json}}</pre>
 </div>
 </body>
 </html>

@@ -7,9 +7,4 @@ ToDo:
 - Shall be able to Copy, Paste, Duplicate across namespaces
 - Shall be able to Delete
 - Shall be able to Add
-
-NOTES:
- - Fix loading
- - Add root create 
- - Add save data (trigger save event)
- - Finish search
+- Shall be searchable
