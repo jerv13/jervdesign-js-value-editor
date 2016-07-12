@@ -24,6 +24,12 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.name = "";
 
     /**
+     * parentName
+     * @type {string}
+     */
+    self.parentName = "";
+
+    /**
      * accessor
      * @type {string}
      */
@@ -54,10 +60,15 @@ var JervDesignJsValueEditorDataSchema = function () {
     self.originalDisplayValue = "";
 
     /**
-     * directive
-     * @type {string}
+     * getParentName
+     * @returns {string}
      */
-    self.directive = null;
+    self.getParentName = function () {
+        if (!self.parentName) {
+            return self.name;
+        }
+        return self.parentName;
+    };
 
     /**
      * filterValidate - filter and validate value

@@ -9,3 +9,7 @@ ToDo:
 - Shall be able to Add
 
 NOTES:
+ - Fix loading
+ - Add root create 
+ - Add save data (trigger save event)
+ - Finish search

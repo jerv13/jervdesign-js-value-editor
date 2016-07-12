@@ -7,7 +7,7 @@ angular.module('JervDesignJsValueEditor').filter(
             var nsParts = ns.split('.');
             var count = nsParts.length;
             var last = count - 1;
-            var spaceCnt = count - 1;
+            var spaceCnt = count;
 
             var spaces = Array(spaceCnt).join(" -");
             

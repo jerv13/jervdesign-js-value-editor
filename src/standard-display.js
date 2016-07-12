@@ -25,8 +25,6 @@ angular.module('JervDesignJsValueEditor').directive(
                     }
                 };
 
-                events.on('loadingSchema', 'JervDesignJsValueEditor', loadingSchema);
-
                 if (!$scope.rootNamespace) {
                     $scope.rootNamespace = "root"
                 }
@@ -41,34 +39,12 @@ angular.module('JervDesignJsValueEditor').directive(
                 );
 
                 var buildSchema = function (schemaData) {
-
                     $scope.schemas = schemaData.schema;
-
-                    // var displayElm = element.find('.scheme-entries');
-                    // displayElm.empty();
-                    //
-                    // var directiveElm;
-                    // var directiveName;
-                    // var directiveValue;
-
-                    // for (var ns in $scope.schemas) {
-                    //     if (ns === rootNamespace) {
-                    //         continue;
-                    //     }
-                    //     directiveName = $scope.schemas[ns].directive;
-                    //     directiveValue = "schemas['" + ns + "']";
-                    //     directiveElm = jQuery('<div jerv-design-js-value-editor-field="" schemadata="' + directiveValue + '" rootNamespace="' + rootNamespace + '">' + directiveName + '</div>');
-                    //     directiveElm.attr('class', 'row');
-                    //     displayElm.append(directiveElm);
-                    // }
-                    //
-                    // $compile(
-                    //     displayElm
-                    // )($scope)
                 };
 
                 buildSchema(schemaData);
 
+                events.on('loadingSchema', 'JervDesignJsValueEditor', loadingSchema);
                 events.on('updateSchema', 'JervDesignJsValueEditor', buildSchema);
             }
 

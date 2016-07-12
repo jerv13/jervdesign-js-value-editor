@@ -17,13 +17,19 @@ angular.module('JervDesignJsValueEditor').service(
             dataType.canDeleteValue = true;
             dataType.rebuildOnChange = true;
             dataType.buildSchemaValues = function (name, value, accessor, schemas) {
+                var childName;
+                var childAccessor;
                 for (var i = 0; i < value.length; i++) {
+                    childName = name + '.' + i;
+                    childAccessor = accessor + '[' + i + ']';
                     JervDesignJsValueEditorService.buildDataSchema(
-                        name + '.' + i,
+                        childName,
                         value[i],
-                        accessor + '[' + i+ ']',
+                        childAccessor,
                         schemas
                     );
+
+                    schemas[childName].parentName = name;
                 }
             };
 
@@ -34,8 +40,13 @@ angular.module('JervDesignJsValueEditor').service(
              * @param schemaValue
              */
             dataType.createValue = function (key, subValue, schemaValue) {
-                key = Number(key);
-                schemaValue[key] = subValue;
+                if (key) {
+                    key = Number(key);
+                    schemaValue[key] = subValue;
+                    return;
+                }
+
+                schemaValue.push(subValue)
             };
 
             /**

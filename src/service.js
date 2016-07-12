@@ -18,7 +18,12 @@ var JervDesignJsValueEditorService = function (
     self.getEvents = function () {
         return JervDesignJsValueEditorEvents;
     };
-    
+
+    /**
+     * setLoading
+     * @param schemaName
+     * @param loading
+     */
     self.setLoading = function (schemaName, loading) {
         self.loadingSchema[schemaName] = loading;
         JervDesignJsValueEditorEvents.trigger('loadingSchema', {schemaName: schemaName, Loading: loading});
@@ -85,84 +90,43 @@ var JervDesignJsValueEditorService = function (
         return typeof value;
     };
 
-    self.getParentSchemaData = function (ns) {
-        var schemaName = self.getSchemaName(ns);
-        var dataParentNs = self.getParentNs(ns);
-        return self.schemas[schemaName].schema[dataParentNs];
-    };
-
+    /**
+     * getKey
+     * @param ns
+     * @returns {*}
+     */
     self.getKey = function (ns) {
         var nsParts = ns.split('.');
         var last = nsParts.length - 1;
         return nsParts[last];
     };
 
+    /**
+     * getSchemaName
+     * @param ns
+     * @returns {*}
+     */
     self.getSchemaName = function (ns) {
         var nsParts = ns.split('.');
         return nsParts[0];
     };
 
-    self.getParentNs = function (ns) {
-        var nsParts = ns.split('.');
-        var last = nsParts.length - 1;
-        nsParts.splice(last, 1);
-        return nsParts.join('.');
-    };
-
-    self.getDataParentNs = function (ns) {
-        var nsParts = ns.split('.');
-        var last = nsParts.length - 1;
-        nsParts.splice(last, 1);
-        nsParts.splice(0, 1);
-        if(nsParts.length < 1) {
-            return '';
-        }
-        return nsParts.join('.');
-    };
-
-    self.getDataNs = function (ns) {
-        var nsParts = ns.split('.');
-        nsParts.splice(0, 1);
-        return nsParts.join('.');
-    };
-
-    self.getDataParentAccessor = function (accessor) {
-        var accessorParts = accessor.split('.');
-        var last = nsParts.length - 1;
-        nsParts.splice(last, 1);
-        nsParts.splice(0, 1);
-        if(nsParts.length < 1) {
-            return '';
-        }
-        return nsParts.join('.');
-    };
-
-    self.getDataAccessor = function (accessor) {
-        var accessorParts = accessor.split('.');
-        accessorParts.splice(0, 1);
-        return accessorParts.join('.');
-    };
-
     /**
      * createValue
-     * @param ns
+     * @param parentNs
      * @param key
      * @param value
      */
-    self.createValue = function (ns, key, value) {
-        var schemaName = self.getSchemaName(ns);
-        var dataParentNs = self.getDataParentNs(ns);
-        if(dataParentNs) {
-            dataParentNs = '.' + dataParentNs
-        }
-        var parentSchema = self.getParentSchemaData(ns);
+    self.createValue = function (parentNs, key, value) {
+        var schemasName = self.getSchemaName(parentNs);
+        var parentSchema = self.getSchema(parentNs);
         var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemasName + '.data' + parentSchema.accessor);
 
         typeServices[parentSchema.type].createValue(key, value, parentSchemaValue);
 
         if(typeServices[parentSchema.type].rebuildOnChange) {
-            self.refreshDataSchema(schemaName);
+            self.refreshDataSchema(schemasName);
         }
     };
 
@@ -172,24 +136,17 @@ var JervDesignJsValueEditorService = function (
      * @param value
      */
     self.updateValue = function (ns, value) {
-        var schemaName = self.getSchemaName(ns);
+        var schemasName = self.getSchemaName(ns);
+        var schema = self.getSchema(ns);
+        var parentSchema = self.getSchema(schema.getParentName());
         var key = self.getKey(ns);
-        var dataParentNs = self.getDataParentNs(ns);
-        if(dataParentNs) {
-            dataParentNs = '.' + dataParentNs
-        }
-        var dataNs = self.getDataNs(ns);
-        if(dataNs) {
-            dataNs = '.' + dataNs
-        }
-        var parentSchema = self.getParentSchemaData(ns);
         var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemasName + '.data' + parentSchema.accessor);
 
         typeServices[parentSchema.type].updateValue(key, value, parentSchemaValue);
 
         if(typeServices[parentSchema.type].rebuildOnChange) {
-            self.refreshDataSchema(schemaName);
+            self.refreshDataSchema(schemasName);
         }
     };
 
@@ -198,22 +155,18 @@ var JervDesignJsValueEditorService = function (
      * @param ns
      */
     self.deleteValue = function (ns) {
-        var schemaName = self.getSchemaName(ns);
+        var schemasName = self.getSchemaName(ns);
+        var schema = self.getSchema(ns);
+        var parentSchema = self.getSchema(schema.getParentName());
         var key = self.getKey(ns);
-        var dataParentNs = self.getDataParentNs(ns);
-        if(dataParentNs) {
-            dataParentNs = '.' + dataParentNs
-        }
-        var parentSchema = self.getParentSchemaData(ns);
-
         var parentSchemaValue = null;
-        eval('parentSchemaValue = self.schemas.' + schemaName + '.data' + dataParentNs);
+        eval('parentSchemaValue = self.schemas.' + schemasName + '.data' + parentSchema.accessor);
 
         typeServices[parentSchema.type].deleteValue(key, parentSchemaValue);
 
-        delete self.schemas[schemaName].schema[ns];
+        delete self.schemas[schemasName].schema[ns];
         if(typeServices[parentSchema.type].rebuildOnChange) {
-            self.refreshDataSchema(schemaName);
+            self.refreshDataSchema(schemasName);
         }
     };
 
@@ -224,6 +177,11 @@ var JervDesignJsValueEditorService = function (
      */
     self.getDataSchema = function (ns) {
         return self.schemas[self.getSchemaName(ns)];
+    };
+
+    self.getSchema = function (ns) {
+        var dataSchema = self.getDataSchema(ns);
+        return dataSchema.schema[ns];
     };
 
     /**

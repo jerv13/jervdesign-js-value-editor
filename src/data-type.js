@@ -14,12 +14,6 @@ var JervDesignJsValueEditorFilterDataType = function () {
     dataType.description = "DEFAULT";
 
     /**
-     * directive - over-ride me
-     * @type {string}
-     */
-    dataType.directive = "";
-
-    /**
      * canCreateValue
      * @type {boolean}
      */
@@ -48,9 +42,10 @@ var JervDesignJsValueEditorFilterDataType = function () {
      * @param name
      * @param value
      * @param accessor
-     * @param schema
+     * @param schemas
      */
-    dataType.buildSchemaValues = function (name, value, accessor, schema) {
+    dataType.buildSchemaValues = function (name, value, accessor, schemas) {
+
     };
 
     /**

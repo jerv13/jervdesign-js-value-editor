@@ -17,13 +17,19 @@ angular.module('JervDesignJsValueEditor').service(
             dataType.canDeleteValue = true;
             dataType.rebuildOnChange = true;
             dataType.buildSchemaValues = function (name, value, accessor, schemas) {
+                var childName;
+                var childAccessor;
                 for (var prop in value) {
+                    childName = name + '.' + prop;
+                    childAccessor = accessor + '.' + prop;
                     JervDesignJsValueEditorService.buildDataSchema(
-                        name + '.' + prop,
+                        childName,
                         value[prop],
-                        accessor + '.' + prop,
+                        childAccessor,
                         schemas
-                    )
+                    );
+
+                    schemas[childName].parentName = name;
                 }
             };
             /**

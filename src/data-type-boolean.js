@@ -8,7 +8,6 @@ angular.module('JervDesignJsValueEditor').service(
 
             dataType.type = "boolean";
             dataType.description = "Handles booleans";
-            dataType.directive = "jerv-design-js-value-editor-field-boolean";
             return dataType;
         }
     ]

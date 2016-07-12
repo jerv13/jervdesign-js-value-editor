@@ -8,7 +8,6 @@ angular.module('JervDesignJsValueEditor').service(
 
             dataType.type = "number";
             dataType.description = "Handles numbers";
-            dataType.directive = "jerv-design-js-value-editor-field-number";
             return dataType;
         }
     ]

@@ -40,13 +40,8 @@ angular.module('JervDesignJsValueEditor').directive(
                         return;
                     }
 
-                    if (!$scope.createData.key) {
-                        alert('Key is required');
-                        return;
-                    }
-
                     JervDesignJsValueEditorService.createValue(
-                        $scope.schemadata.name + '.' + $scope.createData.key,
+                        $scope.schemadata.name,
                         $scope.createData.key,
                         value
                     );
