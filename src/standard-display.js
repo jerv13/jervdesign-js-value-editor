@@ -15,7 +15,6 @@ angular.module('JervDesignJsValueEditor').directive(
              */
             function link($scope, element, attrs) {
                 var events = JervDesignJsValueEditorService.getEvents();
-                //$scope.rootNamespace = attrs.rootNamespace;
                 $scope.loading = JervDesignJsValueEditorService.loading;
                 $scope.showedit = {};
 

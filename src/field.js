@@ -12,6 +12,12 @@ angular.module('JervDesignJsValueEditor').directive(
             function link($scope, element, attrs) {
                 $scope.typeChanged = false;
 
+                if (!$scope.rootNamespace) {
+                    throw console.error("root-namespace attribute missing or empty");
+                }
+
+                $scope.isRoot = ($scope.rootNamespace === $scope.schemadata.name);
+
                 $scope.createData = {
                     key: '',
                     displayValue: ''
@@ -74,6 +80,7 @@ angular.module('JervDesignJsValueEditor').directive(
             return {
                 link: link,
                 scope: {
+                    rootNamespace: '=',
                     schemadata: '=',
                     showedit: "="
                 },
