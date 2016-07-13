@@ -41,6 +41,10 @@ angular.module('JervDesignJsValueEditor').directive(
 
                 var buildSchema = function (schemaData) {
                     $scope.schemas = schemaData.schema;
+                    if ($scope.searchValue) {
+                        // Search again to preserve existing search
+                        $scope.search();
+                    }
                 };
 
                 $scope.save = function () {
