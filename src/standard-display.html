@@ -1,32 +1,34 @@
 <div class="js-value-editor standard-display">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <div class="loading-schemas" ng-show="loading">Loading...</div>
-            <div class="tools"
-                 ng-hide="loading">
+            <div class="tools">
                 <div class="search">
                     <form class="form-inline">
                         <label for="ns-search">Search:</label>
-                        <input id="ns-search" ng-model="search" type="text"/>
-                        <button class="btn btn-default btn-sm" ng-click="search=''">clear</button>
+                        <input id="ns-search" ng-model="searchValue" ng-change="search()" type="text"/>
+                        <button class="btn btn-default btn-sm" ng-click="searchValue=''; search()">clear</button>
+                        <label for="ns-fullpath">Show Path:</label>
+                        <input id="ns-fullpath" ng-model="showFullPath" type="checkbox"/>
                         <button class="btn btn-primary btn-sm pull-right" ng-click="save()">save</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="panel-body">
+            <div class="loading-schemas" ng-show="loading">Loading...</div>
             <div class="container-fluid scheme-entries"
                  ng-hide="loading">
                 <table class="table">
-                    <tbody ng-repeat="(ns, schema) in schemas | JervDesignJsValueEditorSchemaSearchFilter:search">
+                    <tbody ng-repeat="(ns, schema) in schemas track by ns" ng-hide="schemas[ns].searchHide">
                     <tr class="title-row">
                         <td class="value-ns">
                             <a data-toggle="tooltip"
                                data-placement="right"
-                               title="{{schemas[ns].name}} (data{{schemas[ns].accessor}})"
+                               title="{{schemas[ns].accessor}}"
                                href="javascript:void(0)"
                                ng-click="showedit[ns]=!showedit[ns]">
-                                {{schemas[ns].name | JervDesignJsValueEditorNsFormatFilter}}:
+                                <span ng-if="!showFullPath">{{schemas[ns].name | JervDesignJsValueEditorNsFormatFilter}}:</span>
+                                <span ng-if="showFullPath">data{{schemas[ns].accessor}}</span>
                             </a>
                         </td>
                         <td class="value-ns-value">
@@ -39,12 +41,12 @@
                             </button>
                         </td>
                     </tr>
-                    <tr class="edit-row" ng-show="showedit[ns]">
+                    <tr class="edit-row" ng-if="showedit[ns]">
                         <td colspan="3">
                             <div jerv-design-js-value-editor-field=""
                                  root-namespace="rootNamespace"
                                  schemadata="schemas[ns]"
-                                 showedit="showedit"
+                                 showedit="showedit[ns]"
                             >
                             </div>
                         </td>

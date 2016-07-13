@@ -918,9 +918,11 @@ angular.module('JervDesignJsValueEditor').filter(
 angular.module('JervDesignJsValueEditor').directive(
     'jervDesignJsValueEditorStandardDisplay',
     [
+        '$window',
         '$compile',
         'JervDesignJsValueEditorService',
         function (
+            $window,
             $compile,
             JervDesignJsValueEditorService
         ) {
@@ -934,6 +936,7 @@ angular.module('JervDesignJsValueEditor').directive(
                 var events = JervDesignJsValueEditorService.getEvents();
                 $scope.loading = JervDesignJsValueEditorService.loading;
                 $scope.showedit = {};
+                $scope.searchValue = '';
 
                 var loading = function (loading) {
                     $scope.loading = loading;
@@ -958,6 +961,20 @@ angular.module('JervDesignJsValueEditor').directive(
 
                 $scope.save = function () {
                     JervDesignJsValueEditorService.save($scope.rootNamespace);
+                };
+
+                $scope.search = function () {
+                    if (!$scope.searchValue) {
+                        for (var ns in $scope.schemas) {
+                            $scope.schemas[ns].searchHide = false;
+                        }
+                        return;
+                    }
+                    var regex = new RegExp($scope.searchValue, 'i');
+
+                    for (var ns in $scope.schemas) {
+                        $scope.schemas[ns].searchHide = !regex.test(ns);
+                    }
                 };
 
                 buildSchema(schemaData);
