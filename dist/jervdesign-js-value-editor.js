@@ -479,7 +479,7 @@ angular.module('JervDesignJsValueEditor').service(
                 var childAccessor;
                 for (var prop in value) {
                     childName = name + '.' + prop;
-                    childAccessor = accessor + '.' + prop;
+                    childAccessor = accessor + '["' + prop + '"]';
                     JervDesignJsValueEditorService.buildDataSchema(
                         childName,
                         value[prop],
@@ -891,26 +891,6 @@ angular.module('JervDesignJsValueEditor').filter(
             var spaces = Array(spaceCnt).join(" -");
             
             return spaces + ' ' + nsParts[last];
-        };
-    }
-);
-
-angular.module('JervDesignJsValueEditor').filter(
-    'JervDesignJsValueEditorSchemaSearchFilter',
-    function () {
-        return function (input, query) {
-            if (!query) {
-                return input
-            }
-            var result = {};
-            var regex = new RegExp(query, 'i');
-
-            for(var prop in input) {
-                if (regex.test(prop)) {
-                    result[prop] = input[prop];
-                }
-            }
-            return result;
         };
     }
 );

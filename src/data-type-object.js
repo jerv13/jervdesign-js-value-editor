@@ -21,7 +21,7 @@ angular.module('JervDesignJsValueEditor').service(
                 var childAccessor;
                 for (var prop in value) {
                     childName = name + '.' + prop;
-                    childAccessor = accessor + '.' + prop;
+                    childAccessor = accessor + '["' + prop + '"]';
                     JervDesignJsValueEditorService.buildDataSchema(
                         childName,
                         value[prop],
